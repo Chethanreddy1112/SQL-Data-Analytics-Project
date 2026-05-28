@@ -1,0 +1,784 @@
+/*
+Question: What skills are required for the top-paying data analyst jobs?
+- Use the top 10 highest-paying Data Analyst jobs from first query
+- Add the specific skills required for these roles
+- Why? It provides a detailed look at which high-paying jobs demand certain skills, 
+    helping job seekers understand which skills to develop that align with top salaries
+*/
+
+
+
+
+
+
+with top_paying_jobs AS (
+
+    SELECT
+        job_id,
+        job_title_short,
+        company_dim.name AS Company_name,
+        job_location,
+        job_schedule_type,
+        salary_year_avg,
+        job_posted_date::DATE,
+        CASE
+            WHEN job_location='Anywhere' THEN 'Remote'
+            ELSE job_location
+        END AS job_locate
+    FROM
+        job_postings_fact
+    LEFT JOIN company_dim
+    ON job_postings_fact.company_id=company_dim.company_id
+    WHERE
+        job_title_short='Data Analyst' AND
+        job_location='Anywhere' AND
+        salary_year_avg IS NOT NULL
+    ORDER BY
+        salary_year_avg DESC
+    LIMIT 10
+
+)
+SELECT 
+    top_paying_jobs.*,
+    skills
+FROM top_paying_jobs
+INNER join skills_job_dim
+ON top_paying_jobs.job_id=skills_job_dim.job_id
+INNER join skills_dim
+ON skills_job_dim.skill_id=skills_dim.skill_id
+ORDER BY
+    salary_year_avg DESC
+
+
+
+
+
+
+-- [
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "sql"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "python"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "r"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "azure"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "databricks"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "aws"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "pandas"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "pyspark"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "jupyter"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "excel"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "tableau"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "power bi"
+--   },
+--   {
+--     "job_id": 552322,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "AT&T",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "255829.5",
+--     "job_posted_date": "2023-06-18",
+--     "job_locate": "Remote",
+--     "skills": "powerpoint"
+--   },
+--   {
+--     "job_id": 99305,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Pinterest Job Advertisements",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "232423.0",
+--     "job_posted_date": "2023-12-05",
+--     "job_locate": "Remote",
+--     "skills": "sql"
+--   },
+--   {
+--     "job_id": 99305,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Pinterest Job Advertisements",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "232423.0",
+--     "job_posted_date": "2023-12-05",
+--     "job_locate": "Remote",
+--     "skills": "python"
+--   },
+--   {
+--     "job_id": 99305,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Pinterest Job Advertisements",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "232423.0",
+--     "job_posted_date": "2023-12-05",
+--     "job_locate": "Remote",
+--     "skills": "r"
+--   },
+--   {
+--     "job_id": 99305,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Pinterest Job Advertisements",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "232423.0",
+--     "job_posted_date": "2023-12-05",
+--     "job_locate": "Remote",
+--     "skills": "hadoop"
+--   },
+--   {
+--     "job_id": 99305,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Pinterest Job Advertisements",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "232423.0",
+--     "job_posted_date": "2023-12-05",
+--     "job_locate": "Remote",
+--     "skills": "tableau"
+--   },
+--   {
+--     "job_id": 1021647,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Uclahealthcareers",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "217000.0",
+--     "job_posted_date": "2023-01-17",
+--     "job_locate": "Remote",
+--     "skills": "sql"
+--   },
+--   {
+--     "job_id": 1021647,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Uclahealthcareers",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "217000.0",
+--     "job_posted_date": "2023-01-17",
+--     "job_locate": "Remote",
+--     "skills": "crystal"
+--   },
+--   {
+--     "job_id": 1021647,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Uclahealthcareers",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "217000.0",
+--     "job_posted_date": "2023-01-17",
+--     "job_locate": "Remote",
+--     "skills": "oracle"
+--   },
+--   {
+--     "job_id": 1021647,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Uclahealthcareers",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "217000.0",
+--     "job_posted_date": "2023-01-17",
+--     "job_locate": "Remote",
+--     "skills": "tableau"
+--   },
+--   {
+--     "job_id": 1021647,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Uclahealthcareers",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "217000.0",
+--     "job_posted_date": "2023-01-17",
+--     "job_locate": "Remote",
+--     "skills": "flow"
+--   },
+--   {
+--     "job_id": 168310,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "205000.0",
+--     "job_posted_date": "2023-08-09",
+--     "job_locate": "Remote",
+--     "skills": "sql"
+--   },
+--   {
+--     "job_id": 168310,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "205000.0",
+--     "job_posted_date": "2023-08-09",
+--     "job_locate": "Remote",
+--     "skills": "python"
+--   },
+--   {
+--     "job_id": 168310,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "205000.0",
+--     "job_posted_date": "2023-08-09",
+--     "job_locate": "Remote",
+--     "skills": "go"
+--   },
+--   {
+--     "job_id": 168310,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "205000.0",
+--     "job_posted_date": "2023-08-09",
+--     "job_locate": "Remote",
+--     "skills": "snowflake"
+--   },
+--   {
+--     "job_id": 168310,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "205000.0",
+--     "job_posted_date": "2023-08-09",
+--     "job_locate": "Remote",
+--     "skills": "pandas"
+--   },
+--   {
+--     "job_id": 168310,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "205000.0",
+--     "job_posted_date": "2023-08-09",
+--     "job_locate": "Remote",
+--     "skills": "numpy"
+--   },
+--   {
+--     "job_id": 168310,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "205000.0",
+--     "job_posted_date": "2023-08-09",
+--     "job_locate": "Remote",
+--     "skills": "excel"
+--   },
+--   {
+--     "job_id": 168310,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "205000.0",
+--     "job_posted_date": "2023-08-09",
+--     "job_locate": "Remote",
+--     "skills": "tableau"
+--   },
+--   {
+--     "job_id": 168310,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "205000.0",
+--     "job_posted_date": "2023-08-09",
+--     "job_locate": "Remote",
+--     "skills": "gitlab"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "sql"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "python"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "azure"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "aws"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "oracle"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "snowflake"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "tableau"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "power bi"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "sap"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "jenkins"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "bitbucket"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "atlassian"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "jira"
+--   },
+--   {
+--     "job_id": 731368,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Inclusively",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189309.0",
+--     "job_posted_date": "2023-12-07",
+--     "job_locate": "Remote",
+--     "skills": "confluence"
+--   },
+--   {
+--     "job_id": 310660,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Motional",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189000.0",
+--     "job_posted_date": "2023-01-05",
+--     "job_locate": "Remote",
+--     "skills": "sql"
+--   },
+--   {
+--     "job_id": 310660,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Motional",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189000.0",
+--     "job_posted_date": "2023-01-05",
+--     "job_locate": "Remote",
+--     "skills": "python"
+--   },
+--   {
+--     "job_id": 310660,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Motional",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189000.0",
+--     "job_posted_date": "2023-01-05",
+--     "job_locate": "Remote",
+--     "skills": "r"
+--   },
+--   {
+--     "job_id": 310660,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Motional",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189000.0",
+--     "job_posted_date": "2023-01-05",
+--     "job_locate": "Remote",
+--     "skills": "git"
+--   },
+--   {
+--     "job_id": 310660,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Motional",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189000.0",
+--     "job_posted_date": "2023-01-05",
+--     "job_locate": "Remote",
+--     "skills": "bitbucket"
+--   },
+--   {
+--     "job_id": 310660,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Motional",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189000.0",
+--     "job_posted_date": "2023-01-05",
+--     "job_locate": "Remote",
+--     "skills": "atlassian"
+--   },
+--   {
+--     "job_id": 310660,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Motional",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189000.0",
+--     "job_posted_date": "2023-01-05",
+--     "job_locate": "Remote",
+--     "skills": "jira"
+--   },
+--   {
+--     "job_id": 310660,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Motional",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "189000.0",
+--     "job_posted_date": "2023-01-05",
+--     "job_locate": "Remote",
+--     "skills": "confluence"
+--   },
+--   {
+--     "job_id": 1749593,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "186000.0",
+--     "job_posted_date": "2023-07-11",
+--     "job_locate": "Remote",
+--     "skills": "sql"
+--   },
+--   {
+--     "job_id": 1749593,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "186000.0",
+--     "job_posted_date": "2023-07-11",
+--     "job_locate": "Remote",
+--     "skills": "python"
+--   },
+--   {
+--     "job_id": 1749593,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "186000.0",
+--     "job_posted_date": "2023-07-11",
+--     "job_locate": "Remote",
+--     "skills": "go"
+--   },
+--   {
+--     "job_id": 1749593,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "186000.0",
+--     "job_posted_date": "2023-07-11",
+--     "job_locate": "Remote",
+--     "skills": "snowflake"
+--   },
+--   {
+--     "job_id": 1749593,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "186000.0",
+--     "job_posted_date": "2023-07-11",
+--     "job_locate": "Remote",
+--     "skills": "pandas"
+--   },
+--   {
+--     "job_id": 1749593,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "186000.0",
+--     "job_posted_date": "2023-07-11",
+--     "job_locate": "Remote",
+--     "skills": "numpy"
+--   },
+--   {
+--     "job_id": 1749593,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "186000.0",
+--     "job_posted_date": "2023-07-11",
+--     "job_locate": "Remote",
+--     "skills": "excel"
+--   },
+--   {
+--     "job_id": 1749593,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "186000.0",
+--     "job_posted_date": "2023-07-11",
+--     "job_locate": "Remote",
+--     "skills": "tableau"
+--   },
+--   {
+--     "job_id": 1749593,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "SmartAsset",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "186000.0",
+--     "job_posted_date": "2023-07-11",
+--     "job_locate": "Remote",
+--     "skills": "gitlab"
+--   },
+--   {
+--     "job_id": 387860,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Get It Recruit - Information Technology",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "184000.0",
+--     "job_posted_date": "2023-06-09",
+--     "job_locate": "Remote",
+--     "skills": "sql"
+--   },
+--   {
+--     "job_id": 387860,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Get It Recruit - Information Technology",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "184000.0",
+--     "job_posted_date": "2023-06-09",
+--     "job_locate": "Remote",
+--     "skills": "python"
+--   },
+--   {
+--     "job_id": 387860,
+--     "job_title_short": "Data Analyst",
+--     "company_name": "Get It Recruit - Information Technology",
+--     "job_location": "Anywhere",
+--     "job_schedule_type": "Full-time",
+--     "salary_year_avg": "184000.0",
+--     "job_posted_date": "2023-06-09",
+--     "job_locate": "Remote",
+--     "skills": "r"
+--   }
+-- ]
